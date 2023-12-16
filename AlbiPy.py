@@ -26,30 +26,127 @@ class datapoint:
         # data attribute
         self.data = data[:]
         # correct silver prices
-        data[1] //= 10000
-        data[2] //= 10000
-        # convert expire date to datetime object
-        data[17] = datetime.strptime(data[17][0:16], "%Y-%m-%dT%H:%M")
+        try:
+            data[1] //= 10000
+        except TypeError:
+            data[1] = 0
+        except IndexError:
+            data.insert(1, 0)
+
+        try:
+            data[2] //= 10000
+        except TypeError:
+            data[2] = 0
+        except IndexError:
+            data.insert(2, 0)
+
+        # convert expire date to datetime obje
+        try:
+            data[17] = datetime.strptime(data[17][0:16], "%Y-%m-%dT%H:%M")
+        except ValueError:
+            data[17] = datetime(1900, 1, 1, 0, 0)
+        except TypeError:
+            data[17] = datetime(1900, 1, 1, 0, 0)
+        except IndexError:
+            ssasd = datetime(1900, 1, 1, 0, 0)
+            data.insert(17, ssasd)
+
+            
         # set attributes to data indexes
-        self.Id = data[0]
-        self.UnitPriceSilver = data[1]
-        self.TotalPriceSilver = data[2]
-        self.Amount = data[3]
-        self.Tier = data[4]
-        self.IsFinished = data[5]
-        self.AuctionType = data[6]
-        self.HasBuyerFetched = data[7]
-        self.HasSellerFetched = data[8]
-        self.SellerCharacterId = data[9]
-        self.SellerName = data[10]
-        self.BuyerCharacterId = data[11]
-        self.BuyerName = data[12]
-        self.ItemTypeId = data[13]
-        self.ItemGroupTypeId = data[14]
-        self.EnchantmentLevel = data[15]
-        self.QualityLevel = data[16]
-        self.Expires = data[17]
-        self.ReferenceId = data[18]
+        try:
+            self.Id = data[0]
+        except IndexError:
+            self.Id = "NULL"
+
+        try:
+            self.UnitPriceSilver = data[1]
+        except IndexError:
+            self.UnitPriceSilver = 0
+
+        try:
+            self.TotalPriceSilver = data[2]
+        except IndexError:
+            self.TotalPriceSilver = 0
+
+        try:
+            self.Amount = data[3]
+        except IndexError:
+            self.Amount = 0
+
+        try:
+            self.Tier = data[4]
+        except IndexError:
+            self.Tier = 0
+
+        try:
+            self.IsFinished = data[5]
+        except IndexError:
+            self.IsFinished = "false"
+
+        try:
+            self.AuctionType = data[6]
+        except IndexError:
+            self.AuctionType = "offer"
+
+        try:
+            self.HasBuyerFetched = data[7]
+        except IndexError:
+            self.HasBuyerFetched = "false"
+
+        try:
+            self.HasSellerFetched = data[8]
+        except IndexError:
+            self.HasSellerFetched = "false"
+
+        try:
+            self.SellerCharacterId = data[9]
+        except IndexError:
+            self.SellerCharacterId = "c00fd0f0-0ca0-00b0-aeaa-a00ee0f00000"
+
+        try:
+            self.SellerName = data[10]
+        except IndexError:
+            self.SellerName = "NULL"
+
+        try:
+            self.BuyerCharacterId = data[11]
+        except IndexError:
+            self.BuyerCharacterId = "a00aa0a0-0aa0-00a0-aaaa-a00aa0a00000"
+
+        try:
+            self.BuyerName = data[12]
+        except IndexError:
+            self.BuyerName = "NULL"
+
+        try:
+            self.ItemTypeId = data[13]
+        except IndexError:
+            self.ItemTypeId = "NULL"
+
+        try:
+            self.ItemGroupTypeId = data[14]
+        except IndexError:
+            self.ItemGroupTypeId = "NULL"
+
+        try:
+            self.EnchantmentLevel = data[15]
+        except IndexError:
+            self.EnchantmentLevel = 0
+
+        try:
+            self.QualityLevel = data[16]
+        except IndexError:
+            self.QualityLevel = 0
+
+        try:
+            self.Expires = data[17]
+        except IndexError:
+            self.Expires = datetime(1900, 1, 1, 0, 0)
+
+        try:
+            self.ReferenceId = data[18]
+        except IndexError:
+            self.ReferenceId = 'aa0000aa-00aa-00a0-aaa0-0a0a00aa00aa'
 
 
 class sniffer_data:
